@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Biscuit.DbContexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace Biscuit
 {
     public class Startup
@@ -27,6 +30,11 @@ namespace Biscuit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Use a PostgreSQL database
+            var connectionString =  Configuration["ConnectionStrings:DefaultConnection"];
+
+            services.AddDbContext<PostgreContext>(opts =>  opts.UseNpgsql(connectionString));
+
             // Add framework services.
             services.AddMvc();
         }
